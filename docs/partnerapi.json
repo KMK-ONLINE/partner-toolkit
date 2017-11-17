@@ -1,0 +1,575 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is Partner API for BBM Platform",
+    "version": "2.0",
+    "title": "BBM Partner API",
+    "contact": {
+      "email": "mjunaryanto@bbmtek.com"
+    },
+    "x-logo": {
+      "url": "http://www.bbm.com/assets/img/bbm-hero-logo-light.png"
+    }
+  },
+  "tags": [
+    {
+      "name": "Token",
+      "description": "The token service allows you to exchange Short-lived token for Long-lived token"
+    },
+    {
+      "name": "User",
+      "description": "Access to BBM User"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/oauth/token": {
+      "post": {
+        "tags": [
+          "Token"
+        ],
+        "summary": "Exchange token",
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "description": "Base64 of Cliend ID and secreet with the following format: Basic base64(id:secret)",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept",
+            "type": "string",
+            "description": "application/json",
+            "required": false
+          },
+          {
+            "in": "header",
+            "name": "Accept-Encoding",
+            "type": "string",
+            "description": "gzip",
+            "required": false
+          },
+          {
+            "in": "header",
+            "name": "Content-Length",
+            "type": "integer",
+            "description": "The length of request body",
+            "required": false
+          },
+          {
+            "in": "header",
+            "name": "Content-Type",
+            "type": "string",
+            "description": "applicaiton/x-www-form-urlencoded",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Cache-Control",
+            "type": "string",
+            "description": "no-cache",
+            "required": false
+          },
+          {
+            "in": "body",
+            "name": "data",
+            "description": "Requested grant",
+            "schema": {
+              "$ref": "#/definitions/GrantRequest"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "headers": {
+              "Content-Encoding": {
+                "type": "string",
+                "description": "gzip"
+              },
+              "Content-Type": {
+                "type": "string",
+                "description": "text/html; charset=utf-8 OR application/json; charset=utf-8"
+              },
+              "Content-Length": {
+                "type": "integer",
+                "description": "The length of the content"
+              },
+              "Cache-Control": {
+                "type": "string",
+                "description": "no-cache,no-store"
+              },
+              "Expires": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Current date"
+              },
+              "Pragma": {
+                "type": "string",
+                "description": "no-cache"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/GrantResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request. Invalid parameters sent by client."
+          },
+          "401": {
+            "description": "Unautorized. Basic authentication failed."
+          },
+          "500": {
+            "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
+          },
+          "503": {
+            "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
+          }
+        }
+      }
+    },
+    "/v2/user/profile": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get current user profile",
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "description": "bearer [access token]",
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Bad request. Invalid parameters sent by client."
+          },
+          "401": {
+            "description": "Unautorized. Invalid access token."
+          },
+          "429": {
+            "description": "Too many requests. Too many requests in a giving amount of time.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
+          },
+          "503": {
+            "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get user profiles by array of BBM ID",
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "description": "bearer [access token]",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "data",
+            "description": "Array of BbmId",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/BbmId"
+              }
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Invalid parameters sent by client."
+          },
+          "401": {
+            "description": "Unautorized. Invalid access token."
+          },
+          "429": {
+            "description": "Too many requests. Too many requests in a giving amount of time.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
+          },
+          "503": {
+            "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
+          }
+        }
+      }
+    },
+    "/v2/user/contacts": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get current user contacts",
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "description": "bearer [access token]",
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/BbmId"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Invalid parameters sent by client."
+          },
+          "401": {
+            "description": "Unautorized. Invalid access token."
+          },
+          "429": {
+            "description": "Too many requests. Too many requests in a giving amount of time.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
+          },
+          "503": {
+            "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
+          }
+        }
+      }
+    },
+    "/v2/user/timeline/post": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Post to current user's timeline",
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "description": "bearer [access token]",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "data",
+            "description": "Post message templete",
+            "schema": {
+              "$ref": "#/definitions/Template"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful."
+          },
+          "400": {
+            "description": "Bad request. Invalid parameters sent by client."
+          },
+          "401": {
+            "description": "Unautorized. Invalid access token."
+          },
+          "404": {
+            "description": "User not found."
+          },
+          "429": {
+            "description": "Too many requests. Too many requests in a giving amount of time.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
+          },
+          "503": {
+            "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
+          }
+        }
+      }
+    },
+    "/v2/user/message": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Send message to contacts",
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "description": "bearer [access token]",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "data",
+            "description": "Post message templete",
+            "schema": {
+              "$ref": "#/definitions/Message"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful."
+          },
+          "400": {
+            "description": "Bad request. Invalid parameters sent by client."
+          },
+          "401": {
+            "description": "Unautorized. Invalid access token."
+          },
+          "404": {
+            "description": "User not found."
+          },
+          "429": {
+            "description": "Too many requests. Too many requests in a giving amount of time.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
+          },
+          "503": {
+            "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "BbmId": {
+      "description": "The BBM ID of the user",
+      "type": "string"
+    },
+    "GrantRequest": {
+      "type": "object",
+      "properties": {
+        "grant_type": {
+          "type": "string",
+          "description": "Must be set to 'exchange_token'"
+        },
+        "access_token": {
+          "type": "string",
+          "description": "The short-lived access token acquired from html fragment"
+        }
+      }
+    },
+    "GrantResponse": {
+      "type": "object",
+      "properties": {
+        "access_token": {
+          "type": "string",
+          "description": "The BBM long-lived access token value"
+        },
+        "bbm_id": {
+          "type": "string",
+          "description": "Authorized BBM user ID"
+        },
+        "expires_in": {
+          "type": "integer",
+          "description": "The lifetime in seconds of the access token since Jan 1 1970"
+        },
+        "refresh_token": {
+          "type": "string",
+          "description": "The BBM refresh token value"
+        },
+        "scope": {
+          "type": "string",
+          "description": "A list of space-delimited, case sensitive scopes requested for the token. The scopes returned may be a subset of the scopes requested"
+        },
+        "token_type": {
+          "type": "string",
+          "description": "Bearer"
+        }
+      }
+    },
+    "Template": {
+      "type": "object",
+      "description": "Template to be used in timeline post or chat message",
+      "properties": {
+        "templateId": {
+          "type": "string",
+          "description": "ID of the template (required)"
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the message"
+        },
+        "description": {
+          "type": "string",
+          "description": "The message (required)"
+        },
+        "buttonText": {
+          "type": "string",
+          "description": "Button text"
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "The URL to the image"
+        },
+        "iosInvokeUrl": {
+          "type": "string",
+          "description": "The URL when on IOS invoke"
+        },
+        "androidInvokeUrl": {
+          "type": "string",
+          "description": "The URL on Android invoke\""
+        }
+      }
+    },
+    "Avatar": {
+      "type": "object",
+      "properties": {
+        "imageSize": {
+          "type": "integer",
+          "description": "Avatar's image size in bytes"
+        },
+        "resolution": {
+          "type": "string",
+          "description": "Avatar's image resolution"
+        },
+        "imageType": {
+          "type": "string",
+          "description": "Avatar's mime type"
+        },
+        "url": {
+          "type": "string",
+          "description": "URL to the avatar image"
+        }
+      }
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "description": "the error code"
+        },
+        "clientId": {
+          "type": "string",
+          "description": "the Client id"
+        },
+        "appId": {
+          "type": "string",
+          "description": "the App id"
+        },
+        "bbmId": {
+          "type": "string",
+          "description": "the BBM ID"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "bbmId": {
+          "type": "string",
+          "description": "The user BBM ID."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "The user display name."
+        },
+        "avatar": {
+          "type": "array",
+          "description": "The user avatar",
+          "items": {
+            "$ref": "#/definitions/Avatar"
+          }
+        }
+      }
+    },
+    "Message": {
+      "type": "object",
+      "properties": {
+        "to": {
+          "type": "string",
+          "description": "The BBM ID of recipient. Recipient must be in user's contact list"
+        },
+        "language": {
+          "type": "string",
+          "description": "Language code. This would help localize default message for incompatible BBM clients.This uses a RFC1766 primary 2 letter language tag and 2 letter country subtag."
+        },
+        "templateId": {
+          "type": "object",
+          "description": "The message template",
+          "items": {
+            "$ref": "#/definitions/Template"
+          }
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about BBM",
+    "url": "https://bbm.com"
+  }
+}
+

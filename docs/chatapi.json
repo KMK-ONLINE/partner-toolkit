@@ -1,0 +1,635 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is BBM Chat API to develop Chatbot on BBM Platform",
+    "version": "1.2",
+    "title": "BBM ChatAPI",
+    "contact": {
+      "email": "mjunaryanto@bbmtek.com"
+    },
+    "x-logo": {
+      "url": "http://www.bbm.com/assets/img/bbm-hero-logo-light.png"
+    }
+  },
+  "tags": [
+    {
+      "name": "Token",
+      "description": "Chatbot requires Client Credential to talk to BBM Chat API. You can use the same credential to reply messages to multiple users"
+    },
+    {
+      "name": "Chat",
+      "description": "Chat interface between your chatbot and BBM Chat Server "
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/oauth/token": {
+      "post": {
+        "tags": [
+          "Token"
+        ],
+        "summary": "Getting Client Credential",
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "description": "Base64 of Cliend ID and secreet with the following format: Basic base64(id:secret)",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept",
+            "type": "string",
+            "description": "application/json",
+            "required": false
+          },
+          {
+            "in": "header",
+            "name": "Content-Length",
+            "type": "integer",
+            "description": "The length of request body",
+            "required": false
+          },
+          {
+            "in": "header",
+            "name": "Content-Type",
+            "type": "string",
+            "description": "applicaiton/x-www-form-urlencoded",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "data",
+            "description": "Requested grant",
+            "schema": {
+              "$ref": "#/definitions/GrantRequest"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "headers": {
+              "Content-Encoding": {
+                "type": "string",
+                "description": "gzip"
+              },
+              "Content-Type": {
+                "type": "string",
+                "description": "text/html; charset=utf-8 OR application/json; charset=utf-8"
+              },
+              "Content-Length": {
+                "type": "integer",
+                "description": "The length of the content"
+              },
+              "Cache-Control": {
+                "type": "string",
+                "description": "no-cache,no-store"
+              },
+              "Expires": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Current date"
+              },
+              "Pragma": {
+                "type": "string",
+                "description": "no-cache"
+              }
+            },
+            "schema": {
+              "$ref": "#/definitions/GrantResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request. Invalid parameters sent by client."
+          },
+          "401": {
+            "description": "Unautorized. Basic authentication failed."
+          },
+          "500": {
+            "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
+          },
+          "503": {
+            "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
+          }
+        }
+      }
+    },
+    "/<callback-url>/v1/chats": {
+      "post": {
+        "tags": [
+          "Chat"
+        ],
+        "summary": "A callback to your chatbot",
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "BBM-Sig",
+            "type": "string",
+            "description": "Signature which is computed by the BBM platform"
+          },
+          {
+            "in": "header",
+            "name": "Content-Type",
+            "type": "string",
+            "description": "application/json; charset=utf-8"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Return to indicate that the message(s) was delivered. If you have turned on delivery notifications, BBM will mark the messages as \"D\" or delivered; otherwise the messages will be marked as \"R\" or read",
+            "headers": {
+              "Content-Type": {
+                "type": "string",
+                "description": "text/html; charset=utf-8 OR application/json; charset=utf-8"
+              },
+              "Content-Length": {
+                "type": "integer",
+                "description": "The length of the content"
+              }
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "messages": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/MessageStatus"
+                  }
+                }
+              }
+            }
+          },
+          "207": {
+            "description": "Return to indicate that at least one message has failed to deliver"
+          },
+          "400": {
+            "description": "Bad request. Return if the request contains invalid parameters or is otherwise badly formed"
+          },
+          "401": {
+            "description": "Unautorized. Return if the BBM-Sig does not validate"
+          },
+          "500": {
+            "description": "Internal Server Error. Return if your service encounters an unexpected error. BBM will retry at a later time"
+          },
+          "503": {
+            "description": "Service unavailable. Return if your server temporarily unavailable. BBM will retry at a later time"
+          }
+        }
+      }
+    },
+    "/<bbm-url>/v1/chats": {
+      "post": {
+        "tags": [
+          "Chat"
+        ],
+        "summary": "Send message or reply to user",
+        "description": "",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "chatId",
+            "type": "string",
+            "description": "The Chat ID",
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "mTok",
+            "type": "string",
+            "description": "A message token required for sending a message to this chat id",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "description": "bearer [access token]",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Content-Type",
+            "type": "string",
+            "description": "application/json; charset=utf-8",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "data",
+            "description": "The chat message to be sent to user",
+            "schema": {
+              "$ref": "#/definitions/ChatRequest"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful."
+          },
+          "400": {
+            "description": "Bad request. Invalid parameters sent by client."
+          },
+          "401": {
+            "description": "Unautorized. Invalid access token."
+          },
+          "500": {
+            "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
+          },
+          "503": {
+            "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "GrantRequest": {
+      "type": "object",
+      "properties": {
+        "grant_type": {
+          "type": "string",
+          "description": "Must be set to 'client_credentials'",
+          "example": "client_credentials"
+        },
+        "scope": {
+          "type": "string",
+          "description": "A list of space-delimited, case sensitive scopes requested for the token. Available values: 'bot'",
+          "example": "bot"
+        }
+      }
+    },
+    "GrantResponse": {
+      "type": "object",
+      "properties": {
+        "access_token": {
+          "type": "string",
+          "description": "The BBM access token value"
+        },
+        "expires_in": {
+          "type": "integer",
+          "description": "The lifetime in seconds of the access token since Jan 1 1970"
+        },
+        "scope": {
+          "type": "string",
+          "description": "A list of space-delimited, case sensitive scopes requested for the token. The scopes returned may be a subset of the scopes requested"
+        },
+        "token_type": {
+          "type": "string",
+          "description": "Bearer"
+        }
+      }
+    },
+    "ChatRequest": {
+      "type": "object",
+      "description": "Request body between Chat API call",
+      "properties": {
+        "mType": {
+          "type": "string",
+          "description": "The notification type. Values: message | bot (required)"
+        },
+        "chId": {
+          "type": "string",
+          "description": "The Channel ID of the associated channel"
+        },
+        "chatId": {
+          "type": "string",
+          "description": "A chat Id identifying a conversation with the user (required)"
+        },
+        "from": {
+          "type": "string",
+          "description": "A BBM Id identifying the user that the messages are from (required)"
+        },
+        "to": {
+          "type": "string",
+          "description": "A BBM Id identifying the user that the message is to (required)"
+        },
+        "mTok": {
+          "type": "string",
+          "description": "A token required for sending a message to this chat id (required)"
+        },
+        "actions": {
+          "type": "array",
+          "description": "An array of action objects containing one or more actions or status notifications.",
+          "items": {
+            "$ref": "#/definitions/Action"
+          }
+        },
+        "messages": {
+          "type": "array",
+          "description": "An array of message objects containing one or more message payloads",
+          "items": {
+            "$ref": "#/definitions/Message"
+          }
+        },
+        "userInfos": {
+          "type": "object",
+          "description": "A map of BBM Id to userinfo objects (required)",
+          "properties": {
+            "schema": {
+              "$ref": "#/definitions/UserInfo"
+            }
+          }
+        }
+      }
+    },
+    "Avatar": {
+      "type": "object",
+      "properties": {
+        "imageSize": {
+          "type": "integer",
+          "description": "Avatar's image size in bytes"
+        },
+        "resolution": {
+          "type": "string",
+          "description": "Avatar's image resolution"
+        },
+        "imageType": {
+          "type": "string",
+          "description": "Avatar's mime type"
+        },
+        "url": {
+          "type": "string",
+          "description": "URL to the avatar image"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "displayName": {
+          "type": "string",
+          "description": "The user display name."
+        },
+        "avatar": {
+          "type": "array",
+          "description": "The user avatar",
+          "items": {
+            "$ref": "#/definitions/Avatar"
+          }
+        }
+      }
+    },
+    "UserInfo": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "object",
+          "description": "The user object. The key is the BbmId, and value is the User object",
+          "properties": {
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
+    "Action": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The action type. Supported values: read | typing (for notification), text | link | postback  (for buttons) "
+        },
+        "mids": {
+          "type": "array",
+          "description": "Message ID updated by notification type",
+          "items": {
+            "type": "string",
+            "example": "[\"2524be69e40ec933\", ...]"
+          }
+        },
+        "text": {
+          "type": "object",
+          "description": "The object for text action",
+          "properties": {
+            "schema": {
+              "$ref": "#/definitions/TextAction"
+            }
+          }
+        },
+        "link": {
+          "type": "object",
+          "description": "The object for link action",
+          "properties": {
+            "schema": {
+              "$ref": "#/definitions/LinkAction"
+            }
+          }
+        },
+        "postback": {
+          "type": "object",
+          "description": "The object for postback action",
+          "properties": {
+            "schema": {
+              "$ref": "#/definitions/PostbackAction"
+            }
+          }
+        }
+      }
+    },
+    "PostbackAction": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "description": "Label for the action Limits: 20 characters",
+          "example": "Book this offer"
+        },
+        "data": {
+          "type": "string",
+          "description": "String returned via webhook in the postback.data property of the postback action Limits: 300 characters",
+          "example": "action=book&offer=newyear"
+        },
+        "text": {
+          "type": "string",
+          "description": "Text sent when the action is performed. Limits: 300 characters"
+        }
+      }
+    },
+    "LinkAction": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "description": "Label for the action Limits: 20 characters",
+          "example": "Visit our website"
+        },
+        "url": {
+          "type": "string",
+          "description": "URL to display to the user. Limits: 4096 characters",
+          "example": "http://www.example.com"
+        },
+        "text": {
+          "type": "string",
+          "description": "Text sent when the action is performed. Limits: 300 characters"
+        }
+      }
+    },
+    "TextAction": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string",
+          "description": "Label for the action Limits: 20 characters",
+          "example": "Discover latest offers"
+        },
+        "text": {
+          "type": "string",
+          "description": "Text sent when the action is performed. Limits: 300 characters",
+          "example": "Discover latest offers"
+        }
+      }
+    },
+    "Image": {
+      "type": "object",
+      "properties": {
+        "preview": {
+          "type": "string",
+          "description": "URL for an optional medium preview image to display. Recommended sizes: 256x144, 300x250, 300x300, 384x216 px Supported formats: Png, Jpg, Gif, Animated Gif. Limits: 4096 character limit for URL. 150 KB image or smaller",
+          "example": "https://placeholdit.imgix.net/~text?txtsize=33&txt=256%C3%97144&w=256&h=144"
+        },
+        "url": {
+          "type": "string",
+          "description": "URL to the image to display. Supported formats: Png, Jpeg, Gif, Animated Gif. Limits: 4096 character limit for URL. 10 MB image or smaller",
+          "example": "https://placeholdit.imgix.net/~text?txtsize=33&txt=1080Ã—566&w=1080&h=566"
+        }
+      }
+    },
+    "Link": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string",
+          "description": "How to open the link. Values: def | extdef: launches the link in a new webview. ext: launches the link in an external browser",
+          "example": "def"
+        },
+        "url": {
+          "type": "string",
+          "description": "URL to display to the user. Limit: 4096 characters",
+          "example": "https://www.example.com"
+        }
+      }
+    },
+    "Buttons": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Title string that shows up on top of the message. Limits: 40 characters",
+          "example": "Rome Dream Discount"
+        },
+        "desc": {
+          "type": "string",
+          "description": "Descriptive message. Limits: 160 characters (no image or title) Limits: 60 characters (message with an image or title)",
+          "example": "Exclusive for BBM users. Special discount package for families."
+        },
+        "actions": {
+          "type": "object",
+          "description": "A list of actions. Max 4 items"
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of the image to display. Supported formats: Png, Jpeg, Gif, Animated Gif Limits: 1000 character limit for URL. 10 MB image or smaller",
+          "example": "https://example.com/bot/images/image.jpg"
+        }
+      }
+    },
+    "Message": {
+      "type": "object",
+      "properties": {
+        "index": {
+          "type": "integer",
+          "description": "A message index indicating order. Starts at 1. Not required when only one message is sent"
+        },
+        "type": {
+          "type": "string",
+          "description": "The message type [image | link | text | buttons] (required)",
+          "example": "image"
+        },
+        "mid": {
+          "type": "integer",
+          "description": "A unique message Id (required)"
+        },
+        "ts": {
+          "type": "integer",
+          "description": "The timestamp of the message in milliseconds since Jan 1, 1970. (required)"
+        },
+        "text": {
+          "type": "string",
+          "description": "The text for Message type: Text",
+          "example": "This is text message"
+        },
+        "link": {
+          "type": "object",
+          "description": "The link for Message type: Link",
+          "properties": {
+            "schema": {
+              "$ref": "#/definitions/Link"
+            }
+          }
+        },
+        "buttons": {
+          "type": "object",
+          "description": "The text buttons for Message type: Buttons",
+          "properties": {
+            "schema": {
+              "$ref": "#/definitions/Buttons"
+            }
+          }
+        },
+        "image": {
+          "type": "object",
+          "description": "The image for the Message type: Image",
+          "properties": {
+            "schema": {
+              "$ref": "#/definitions/Image"
+            }
+          }
+        }
+      }
+    },
+    "MessageStatus": {
+      "type": "object",
+      "properties": {
+        "mid": {
+          "type": "integer",
+          "description": "A unique message Id. Not required when the code indicates an error"
+        },
+        "result": {
+          "type": "object",
+          "description": "A result object containing on of the result codes below",
+          "properties": {
+            "code": {
+              "type": "string",
+              "description": "The error code [200 | 400 | 409 | 500 | 503]"
+            },
+            "error": {
+              "type": "string",
+              "description": "A short error description if desired"
+            }
+          }
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about BBM",
+    "url": "https://bbm.com"
+  }
+}
+
