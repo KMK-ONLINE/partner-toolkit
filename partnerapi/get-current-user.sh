@@ -1,5 +1,9 @@
 #!/bin/bash
+
 # Partner API
-# Get Current User
+# Get Current User Profile
+
+# Access token could be acquired from running pm2 log
 ACCESS_TOKEN="bearer eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIiwia2lkIjoiYmJtdHNfZW5jX2tleV9iZXRhIiwiY3R5IjoiSldUIn0..XuN0T2aLqzMSeugI.J3ofA1C0SILJweK5fkfFVEUrQ7mhjPagsrJlesjKkB9TFk2xLFgnD45E6QOVSqEvWVtWmFSq-Vwfi57kbSuwLaZ2rhulKL8GWYO7-Z0uKtd9OWCd3mF7phS1VA5vhMdRZttGgF9dd5DcASz4vyGSuvkjLBWwqlB1MDgUHIPoCevS4PLeNoZ1Cl4tUTX2IIRhoLl97zWCVxwq7dDqIE72kJgTxVHekQ114-H_yQUDbzBhbit-5MT3Fc6NrxQoX027ZtOlAFsufadY4ea1dM_kzu5n03henktY3RU84P2O7Qedbk581cO9aevR-puKMUvfNwd23nSXflZ5_zlESPy7ndAPtiCro-UvwxRLeIZlh1OqtUVVUEvetH2ATO7b-4i0QKCdiZ6aTbX7sWOPsbyMIUJaZyuVID6FAE4uIK_UeyWJHNSuG-AoBVJuyg.qMSXhwfzdLDg1bAQDO2H-A"
+
 curl -v -H "Authorization:$ACCESS_TOKEN" 'https://api-beta.bbm.blackberry.com:8443/v2/user/profile'
