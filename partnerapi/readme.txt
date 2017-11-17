@@ -1,4 +1,4 @@
-I assume you've already clone this git
+#I assume you've already clone this git
 These scripts work on bash
 I never test on another env
 
