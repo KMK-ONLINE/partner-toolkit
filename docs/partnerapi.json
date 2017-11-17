@@ -14,7 +14,7 @@
   "tags": [
     {
       "name": "Token",
-      "description": "The token service allows you to exchange Short-lived token for Long-lived token"
+      "description": "The token service allows you to exchange or refresh token"
     },
     {
       "name": "User",
@@ -30,7 +30,7 @@
         "tags": [
           "Token"
         ],
-        "summary": "Exchange token",
+        "summary": "Exchange or refresh token",
         "description": "",
         "parameters": [
           {
@@ -413,11 +413,21 @@
       "properties": {
         "grant_type": {
           "type": "string",
-          "description": "Must be set to 'exchange_token'"
+          "description": "Set 'exchange_token' to exchange Short-lived to Long-lived OR 'refresh_token' to refresh token",
+          "example": "exchange_token"
         },
         "access_token": {
           "type": "string",
-          "description": "The short-lived access token acquired from html fragment"
+          "description": "The short-lived access token acquired from html fragment. Mandatory for exhange token request"
+        },
+        "refresh_token": {
+          "type": "string",
+          "description": "The refresh_token acquired in previous token request.  Mandatory for refesh token request"
+        },
+        "scope": {
+          "type": "string",
+          "description": "Mandatory for refresh token request. Set to v1",
+          "example": "v1"
         }
       }
     },
@@ -572,4 +582,3 @@
     "url": "https://bbm.com"
   }
 }
-
