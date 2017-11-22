@@ -1,15 +1,14 @@
 #!/bin/bash
 
-# Partner API
-# Exchange token from short to long live token
+printf 'Partner API\n'
+printf 'Exchange token from short lived token to long lived token\n'
 # ./exchange-token.sh <client-id> <client-secreet> <access-token>
 # Access token could be acquired from running pm2 log
-# BASE64 is encoded code from "oauthUsername:oauthPassword" that could be acquired from .env file
+printf 'BASE64 is encoded code from "oauthUsername:oauthPassword" that could be acquired from .env file\n'
 
-echo This will exhchange short-lived token to long-lived token.
-echo 'Please enter Client ID'
+printf 'Please enter clientId/oauthUsername\n'
 read clientID
-echo 'Please enter Client Secreet'
+printf 'Please enter clientSecreet/oauthPassword\n'
 read clientSecreet
 combined=$clientID:$clientSecreet
 baseEncoded64=`printf $combined | base64 | tr -d '[:space:]'`
