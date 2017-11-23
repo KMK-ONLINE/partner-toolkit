@@ -3,7 +3,7 @@ These scripts work on bash
 I never test on another env
 
 # Important !
- 
+  You may refer to this Docs http://demobbm.com/docs/partnerapi.html
     Enter the shell
     Get your token by running "pm2 log" on server in root.
     Get your phone and access "demo" from "discover" and then touch the button "send short live token.."
