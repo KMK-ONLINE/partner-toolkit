@@ -1,4 +1,4 @@
-#!/bin/bash
+#/bin/bash
 
 # Chat API
 # Getting Client Credentials from Access Token
