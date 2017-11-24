@@ -1,35 +1,23 @@
 #/bin/bash
 # Chat API
-# Send a new message to a User
+# Getting Client Credentials from Access Token
 # ./exchange-token.sh <client-id> <client-secreet> <access-token>
-# mTok can be acquired from running "pm2 log"
-#Sender and Reciever BBMID can be aquired from "pm2 log""
-echo 'This will send a message to a single user'
-echo 'Please Enter Access Token (bearer)\n'
-read accessToken
-echo 'Please enter Chat Id\n'
-read ChatId
-echo 'Please enter mTok\n'
-read mTok
-echo 'Please enter Channel Id\n'
-read channelId
-echo 'Please enter BBM Id of From(Sender)\n'
-read fromBBMId
-echo 'Please enter BBM Id of To(Reciever)\n'
-read toBBMId
-echo 'Enter the message\n'
-read message
-echo 'Enter the username(Sender)\n'
-read senderName
-curl -v \
--H "Content-Type: application/json" \
--H "Authorization: $accessToken" \
--d '{"mType":"bot","chId":$channelId,"chatId":$chatId,"from":$fromBBMId,"to":$toBBMId,
-"messages": [
-    {
-      "type": "text",
-      "text": $message
-    }
-  ],
-"userInfos":{$fromBBMId:{"name":$senderName}}} ' \
-https://chat-beta.bbm.blackberry.com/v1/chats/$chatId?mTok=$mTok
+# Access token can be acquired from running "pm2 log"
+# BASE64 is encoded code from "oauthUsername:oauthPassword" that could be acquired from .env file
+echo 'This will get the Clint Credentials from the Access Token\n'
+echo 'Please enter Client ID\n'
+read clientID
+echo 'Please enter Client Secret\n'
+read clientSecreet
+combined=$clientID:$clientSecreet
+baseEncoded64=`printf $combined | base64 | tr -d '[:space:]'`
+echo $combined
+echo 'below is your base64\n'
+echo $baseEncoded64
+echo 'Please enter path to your Private Key file (.key)\n'
+echo 'Example /app/demo-server/nodejs/ssl/bbmmobilenews.com_thawte.key\n'
+read key
+echo 'Please enter path to your Cert file (.crt)\n'
+echo 'Example /app/demo-server/nodejs/ssl/bbmmobilenews.com_thawte.crt\n'
+read crt
+curl -v --cert $crt --key $key -H "Content-Type:application/x-www-form-urlencoded" -H "Accept: application/json" -H "Authorization: Basic $baseEncoded64" -d "grant_type=client_credentials" "https://auth-beta.bbm.blackberry.com:8443/oauth/token"
