@@ -33,4 +33,3 @@ curl -v \
   ],
 "userInfos":{$fromBBMId:{"name":$senderName}}} ' \
 https://chat-beta.bbm.blackberry.com/v1/chats/$chatId?mTok=$mTok
-
