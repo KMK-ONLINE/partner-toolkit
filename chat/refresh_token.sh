@@ -1,3 +1,5 @@
+#!/bin/bash
+
 printf 'Partner API\n'
 printf 'Refresh token\n'
 # ./exchange-token.sh <client-id> <client-secreet> <access-token>
