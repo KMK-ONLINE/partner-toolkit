@@ -4,8 +4,14 @@
 # Get Current User Profile
 
 # Access token could be acquired from running pm2 log
-echo 'This will return current user profile from exchange token.'
+echo 'This will return Current User Profile from Exchange Token.'
 echo 'Please enter your Access Token (bearer abcdefghijklmnopqrstuvwxyz)'
 read accessToken
+echo 'Enter URL'
+echo 'Example https://auth-str.eval.blackberry.com:8443'
+read URL
+# https://auth-beta.bbm.blackberry.com:8443
+# https://auth-str.eval.blackberry.com:8443
+# https://auth2.bbm.blackberry.com
 
-curl -v -H "Authorization:$accessToken" 'https://api-beta.bbm.blackberry.com:8443/v2/user/profile'
+curl -v -H "Authorization:$accessToken" '$URL/v2/user/profile'
