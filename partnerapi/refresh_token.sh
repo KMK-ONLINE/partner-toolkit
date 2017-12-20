@@ -3,13 +3,11 @@
 printf 'Partner API\n'
 printf 'Refresh token\n'
 # ./exchange-token.sh <client-id> <client-secreet> <access-token>
-printf 'Access token could be acquired from running pm2 log\n'
-printf 'BASE64 is encoded code from "oauthUsername:oauthPassword" that could be acquired from .env file in the server\n'
 
-printf 'This will exhchange short-lived token to long-lived token.\n'
-printf 'Please enter clientId/oauthUsername\n'
+printf 'This will get refresh token.\n'
+printf 'Please enter clientId\n'
 read clientID
-printf 'Please enter clientSecreet/oauthPassword\n'
+printf 'Please enter clientSecreet\n'
 read clientSecreet
 # translate to base64
 combined=$clientID:$clientSecreet
@@ -18,15 +16,14 @@ printf 'below is your base64\n'
 printf $baseEncoded64
 
 printf '\nPlease enter refresh_token that\n'
-printf 'Acquired from exchange_token.sh\n'
 read refreshToken
 printf '\nPlease enter path to your Private Key file (.key)\n'
-printf 'Example /app/demo-server/nodejs/ssl/bbmmobilenews.com_thawte.key\n'
+printf 'Example /app/demo-server/ssl/yourkey.key\n'
 read key
 printf '\nPlease enter path to your Cert file (.crt)\n'
-printf 'Example /app/demo-server/nodejs/ssl/bbmmobilenews.com_thawte.crt\n'
+printf 'Example /app/demo-server/ssl/yourkey.crt\n'
 read crt
-printf 'Enter the URL'
+printf 'Enter the token server URL'
 printf 'Example https://auth-str.eval.blackberry.com:8443'
 read URL
 # https://auth-beta.bbm.blackberry.com:8443
