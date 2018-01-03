@@ -1,6 +1,6 @@
 #!/bin/bash
 
-
+echo 'this script used to broadcast'
 printf 'Please enter clientId/oauthUsername\n'
 read clientID
 printf 'Please enter clientSecreet/oauthPassword\n'
