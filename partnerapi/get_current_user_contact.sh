@@ -14,4 +14,4 @@ read URL
 # https://auth-str.eval.blackberry.com:8443
 # https://auth2.bbm.blackberry.com
 
-curl -v -H "Authorization:$accessToken" '$URL/v2/user/contacts'
+curl -v -H "Authorization:$accessToken" "$URL/v2/user/contacts"
