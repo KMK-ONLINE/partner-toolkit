@@ -3,6 +3,8 @@
 
 echo Enter token (starting from bearer ...)
 read bearer
+echo Enter Channel ID
+read channelId
 echo Enter Chat ID
 read chatId
 echo Enter sender ID(from)
@@ -17,12 +19,12 @@ read mTok
 curl -v \
 -H "Content-Type: application/json" \
 -H "Authorization: ${bearer}" \
--d '{"mType":"bot","chId":"C00132297","chatId":"${chatId}","from":"${from}","to":"${to}",
+-d '{"mType":"bot","chId":"${channelId}","chatId":"${chatId}","from":"${from}","to":"${to}",
 "messages": [
     {
       "type": "text",
       "text": "${message}"
     }
   ],
-"userInfos":{"3175533613684883456":{"name":"Demo Bot"}}} ' \
-https://chat-beta.bbm.blackberry.com/v1/chats/${chatId}?mTok=${mTok}
+"userInfos":{${from} :{"name":"Demo Bot"}}} ' \
+https://chat.bbmessaging.com/v1/chats/${chatId}?mTok=${mTok}

@@ -15,4 +15,4 @@ echo $combined
 echo 'below is your base64\n'
 echo $baseEncoded64
 
-curl -v  -H "Content-Type:application/x-www-form-urlencoded" -H "Accept: application/json" -H "Authorization: Basic $baseEncoded64" -d "grant_type=client_credentials"  "https://token.bbmessaging.com/oauth/token"
+curl -v  -H "Content-Type:application/x-www-form-urlencoded" -H "Accept: application/json" -H "Authorization: Basic $baseEncoded64" -d "grant_type=client_credentials&scope=bot"  "https://token.bbmessaging.com/oauth/token"
