@@ -10,7 +10,7 @@ read bbmId
 echo 'Please enter ChannelId\n'
 read channelId
 
-curl -v  -H "Content-Type:application/json; charset=utf-8" -H "Accept: application/json" -H "Authorization: bearer $t$
+curl -v  -H "Content-Type:application/json; charset=utf-8" -H "Accept: application/json" -H "Authorization: bearer $token" \
 -d '{"from":"'$bbmId'", "chId":"'$channelId'",
 "message":
     {
@@ -20,7 +20,7 @@ curl -v  -H "Content-Type:application/json; charset=utf-8" -H "Accept: applicati
       "url":"https://www.vidio.com/watch/1257896",
       "siteName":"Video",
       "description":"This is broadcast video test",
-      "image":"https://cdn0-a.production.vidio.static6.com/uploads/video/image/1257896/wide-pemenang-grammy-3127aa.jp$
+      "image":"https://cdn0-a.production.vidio.static6.com/uploads/video/image/1257896/wide-pemenang-grammy-3127aa.jpg"
         }
      }
   }', \

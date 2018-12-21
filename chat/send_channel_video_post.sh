@@ -5,9 +5,11 @@
 echo 'This will send channel video post'
 echo 'Please enter Access Token\n'
 read token
+echo 'Please enter ChannelID\n'
+read channelId
 
 curl -v  -H "Content-Type:application/json; charset=utf-8" \
  -H "Accept: application/json" \
  -H "Authorization: bearer $token"  \
 -d '{"videoUrl": "https://www.vidio.com/watch/1523206-hot-news-komentar-keras-gisel-atas-hastag-save-gempi"}', \
-"https://api.bbmessaging.com/v2/channels/C012A6C90/posts"
+"https://api.bbmessaging.com/v2/channels/$channelId/posts"

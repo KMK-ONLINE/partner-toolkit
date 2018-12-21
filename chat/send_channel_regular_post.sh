@@ -6,9 +6,11 @@
 echo 'This will send channel regular post'
 echo 'Please enter Access Token\n'
 read token
+echo 'Please enter ChannelID\n'
+read channelId
 
 curl -v  -H "Content-Type:application/json; charset=utf-8" \
  -H "Accept: application/json" \
  -H "Authorization: bearer $token"  \
--d '{"description":"This is channel regular post test", "title":"Group War", "imageUrl": "https://bbmtek.files.wordpres$
-"https://api.bbmessaging.com/v2/channels/C012A6C90/posts"
+-d '{"description":"This is channel regular post test", "title":"Group War", "imageUrl": "https://bbmtek.files.wordpress.com/2018/12/01-Grup_War-900x900pxl-1.png?w=666"}', \
+"https://api.bbmessaging.com/v2/channels/$channelId/posts"

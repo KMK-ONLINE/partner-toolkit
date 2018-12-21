@@ -10,7 +10,7 @@ read bbmId
 echo 'Please enter ChannelID\n'
 read channelId
 
-curl -v  -H "Content-Type:application/json; charset=utf-8" -H "Accept: application/json" -H "Authorization: bearer $t$
+curl -v  -H "Content-Type:application/json; charset=utf-8" -H "Accept: application/json" -H "Authorization: bearer $token" \
 -d '{"from":"'$bbmId'", "chId":"'$channelId'",
 "message":
     {
