@@ -7,12 +7,10 @@ echo 'Please enter Access Token\n'
 read token
 echo 'Please enter bbmID\n'
 read bbmId
-echo 'Pease enter channelId\n'
-read channelId
 
 curl -v  -H "Content-Type:application/json; charset=utf-8" -H "Accept: application/json" -H \
  "Authorization: bearer $token"  \
--d '{"from":"'$bbmId'","chId":"'$channelId'",
+-d '{"from":"'$bbmId'",
 "message":
     {
       "type": "buttons",
