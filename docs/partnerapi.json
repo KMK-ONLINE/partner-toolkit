@@ -401,6 +401,186 @@
           }
         }
       }
+    },
+    "/channel/regular" : {
+      "post": {
+        "tags": [
+          "Channel Regular"
+        ],
+        "summary": "Send regular post",
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "description": "bearer 'access token'",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept",
+            "type": "string",
+            "description": "application/json",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Content-Type",
+            "type": "string",
+            "description": "application/json; charset=utf-8",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "data",
+            "description": "Requested grant",
+            "schema": {
+              "$ref": "#/definitions/ChannelRegularData"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful."
+          },
+          "400": {
+            "description": "Bad request. Invalid parameters sent by client."
+          },
+          "401": {
+            "description": "Unauthorized. Basic authentication failed."
+          },
+          "500": {
+            "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
+          },
+          "503": {
+            "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
+          }
+        }
+      }
+    },
+    "/channel/video": {
+      "post": {
+        "tags": [
+          "Channel Video"
+        ],
+        "summary": "Send video post",
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "description": "bearer 'access token'",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept",
+            "type": "string",
+            "description": "application/json",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Content-Type",
+            "type": "string",
+            "description": "application/json; charset=utf-8",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "data",
+            "description": "Requested grant",
+            "schema": {
+              "$ref": "#/definitions/ChannelVideoData"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful."
+          },
+          "400": {
+            "description": "Bad request. Invalid parameters sent by client."
+          },
+          "401": {
+            "description": "Unauthorized. Basic authentication failed."
+          },
+          "500": {
+            "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
+          },
+          "503": {
+            "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
+          }
+        }
+      }
+    },
+    "/channel/buy": {
+      "post": {
+        "tags": [
+          "Channel Buy Now"
+        ],
+        "summary": "Send buy now post",
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "description": "bearer 'access token'",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept",
+            "type": "string",
+            "description": "application/json",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Content-Type",
+            "type": "string",
+            "description": "application/json; charset=utf-8",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "data",
+            "description": "Requested grant",
+            "schema": {
+              "$ref": "#/definitions/ChannelBuyData"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful."
+          },
+          "400": {
+            "description": "Bad request. Invalid parameters sent by client."
+          },
+          "401": {
+            "description": "Unauthorized. Basic authentication failed."
+          },
+          "500": {
+            "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
+          },
+          "503": {
+            "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -573,6 +753,57 @@
           "items": {
             "$ref": "#/definitions/Template"
           }
+        }
+      }
+    },
+    "ChannelRegularData": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Title post"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description post"
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "Put image url"
+        }
+      }
+    },
+    "ChannelVideoData" : {
+      "type": "object",
+      "properties": {
+        "videoUrl": {
+          "type": "string",
+          "description": "Put video url"
+        }
+      }
+    },
+    "ChannelBuyData": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Title post"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description post"
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "Put image url"
+        },
+        "ctaButtonName": {
+          "type": "string",
+          "description": "Text in the button e:g 'Buy Now'"
+        },
+        "ctaUrl": {
+          "type": "string",
+          "description": "Site url"
         }
       }
     }
