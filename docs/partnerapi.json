@@ -405,7 +405,7 @@
     "/channel/regular" : {
       "post": {
         "tags": [
-          "Channel Regular"
+          "Channel"
         ],
         "summary": "Send regular post",
         "description": "",
@@ -465,7 +465,7 @@
     "/channel/video": {
       "post": {
         "tags": [
-          "Channel Video"
+          "Channel"
         ],
         "summary": "Send video post",
         "description": "",
@@ -525,7 +525,7 @@
     "/channel/buy": {
       "post": {
         "tags": [
-          "Channel Buy Now"
+          "Channel"
         ],
         "summary": "Send buy now post",
         "description": "",
