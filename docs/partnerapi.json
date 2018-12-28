@@ -29,494 +29,494 @@
     "https"
   ],
   "paths": {
-      "/oauth/authorize": {
-        "post": {
-          "tags": [
-            "Token"
-          ],
-          "summary": "The authorization request sent to the token server to obtain an authorization code",
-          "description": "",
-          "parameters": [
-            {
-              "in": "header",
-              "name": "Authorization",
-              "type": "string",
-              "description": "Basic authentication as per RFC2617. Base64 of Cliend ID and secreet with the following format: Basic base64(id:secret)",
-              "required": true
-            },
-            { "in":"query",
-              "name":"response_type",
-              "type": "string",
-              "description": "set to 'code' (to get auth code in Normal OAuth) or 'token' (access token as html fragment in FastOAuth).  ",
-              "example": "code"
-            },
-            {
-            "in":"query",
-              "name":"client_id" ,
-              "type": "string",
-              "description": "The client ID"
-            },
-            {"in":"query",
-              "name":"redirect_uri",
-              "type": "string",
-              "description": "Redirect URI"
-            },
-            {"in":"query",
-              "name":"scope",
-              "type": "string",
-              "description": "MUST be set to v1",
-              "example": "v1"
-            },
-            {"in":"query",
-              "name":"state",
-              "type": "string",
-              "description": "Applicable to Normal oAuth. Cross-site request forgery (CSRF) state to mitigate cross site attacks, it will be passed through the token server and return to the client for validation",
-              "example": "state1234"
-            }
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "200": {
-              "description": "The request was successful. It will return information as query parameter",
-              "headers": {
+    "/oauth/authorize": {
+      "post": {
+        "tags": [
+          "Token"
+        ],
+        "summary": "The authorization request sent to the token server to obtain an authorization code",
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "description": "Basic authentication as per RFC2617. Base64 of Cliend ID and secreet with the following format: Basic base64(id:secret)",
+            "required": true
+          },
+          { "in":"query",
+            "name":"response_type",
+            "type": "string",
+            "description": "set to 'code' (to get auth code in Normal OAuth) or 'token' (access token as html fragment in FastOAuth).  ",
+            "example": "code"
+          },
+          {
+          "in":"query",
+            "name":"client_id" ,
+            "type": "string",
+            "description": "The client ID"
+          },
+          {"in":"query",
+            "name":"redirect_uri",
+            "type": "string",
+            "description": "Redirect URI"
+          },
+          {"in":"query",
+            "name":"scope",
+            "type": "string",
+            "description": "MUST be set to v1",
+            "example": "v1"
+          },
+          {"in":"query",
+            "name":"state",
+            "type": "string",
+            "description": "Applicable to Normal oAuth. Cross-site request forgery (CSRF) state to mitigate cross site attacks, it will be passed through the token server and return to the client for validation",
+            "example": "state1234"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful. It will return information as query parameter",
+            "headers": {
 
+            },
+            "schema": {
+              "$ref": "#/definitions/AuthCodeResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request. Invalid parameters sent by client."
+          },
+          "401": {
+            "description": "Unautorized. Basic authentication failed."
+          },
+          "500": {
+            "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
+          },
+          "503": {
+            "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
+          }
+        }
+      }
+    },
+    "/oauth/token": {
+      "post": {
+        "tags": [
+          "Token"
+        ],
+        "summary": "Get Access token, exchange or refresh token",
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "description": "Basic authentication as per RFC2617. Base64 of Cliend ID and secreet with the following format: Basic base64(id:secret)",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Accept",
+            "type": "string",
+            "description": "application/json",
+            "required": false
+          },
+          {
+            "in": "header",
+            "name": "Accept-Encoding",
+            "type": "string",
+            "description": "gzip",
+            "required": false
+          },
+          {
+            "in": "header",
+            "name": "Content-Length",
+            "type": "integer",
+            "description": "The length of request body",
+            "required": false
+          },
+          {
+            "in": "header",
+            "name": "Content-Type",
+            "type": "string",
+            "description": "applicaiton/x-www-form-urlencoded",
+            "required": true
+          },
+          {
+            "in": "header",
+            "name": "Cache-Control",
+            "type": "string",
+            "description": "no-cache",
+            "required": false
+          },
+          {
+            "in": "body",
+            "name": "data",
+            "description": "Requested grant",
+            "schema": {
+              "$ref": "#/definitions/GrantRequest"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "headers": {
+              "Content-Encoding": {
+                "type": "string",
+                "description": "gzip"
               },
-              "schema": {
-                "$ref": "#/definitions/AuthCodeResponse"
+              "Content-Type": {
+                "type": "string",
+                "description": "text/html; charset=utf-8 OR application/json; charset=utf-8"
+              },
+              "Content-Length": {
+                "type": "integer",
+                "description": "The length of the content"
+              },
+              "Cache-Control": {
+                "type": "string",
+                "description": "no-cache,no-store"
+              },
+              "Expires": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Current date"
+              },
+              "Pragma": {
+                "type": "string",
+                "description": "no-cache"
               }
             },
-            "400": {
-              "description": "Bad request. Invalid parameters sent by client."
-            },
-            "401": {
-              "description": "Unautorized. Basic authentication failed."
-            },
-            "500": {
-              "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
-            },
-            "503": {
-              "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
+            "schema": {
+              "$ref": "#/definitions/GrantResponse"
             }
+          },
+          "400": {
+            "description": "Bad request. Invalid parameters sent by client."
+          },
+          "401": {
+            "description": "Unautorized. Basic authentication failed."
+          },
+          "500": {
+            "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
+          },
+          "503": {
+            "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
+          }
+        }
+      }
+    },
+    "/v2/user/profile": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get current user profile",
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "description": "bearer [access token]",
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Bad request. Invalid parameters sent by client."
+          },
+          "401": {
+            "description": "Unautorized. Invalid access token."
+          },
+          "429": {
+            "description": "Too many requests. Too many requests in a giving amount of time.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
+          },
+          "503": {
+            "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
           }
         }
       },
-      "/oauth/token": {
-        "post": {
-          "tags": [
-            "Token"
-          ],
-          "summary": "Get Access token, exchange or refresh token",
-          "description": "",
-          "parameters": [
-            {
-              "in": "header",
-              "name": "Authorization",
-              "type": "string",
-              "description": "Basic authentication as per RFC2617. Base64 of Cliend ID and secreet with the following format: Basic base64(id:secret)",
-              "required": true
-            },
-            {
-              "in": "header",
-              "name": "Accept",
-              "type": "string",
-              "description": "application/json",
-              "required": false
-            },
-            {
-              "in": "header",
-              "name": "Accept-Encoding",
-              "type": "string",
-              "description": "gzip",
-              "required": false
-            },
-            {
-              "in": "header",
-              "name": "Content-Length",
-              "type": "integer",
-              "description": "The length of request body",
-              "required": false
-            },
-            {
-              "in": "header",
-              "name": "Content-Type",
-              "type": "string",
-              "description": "applicaiton/x-www-form-urlencoded",
-              "required": true
-            },
-            {
-              "in": "header",
-              "name": "Cache-Control",
-              "type": "string",
-              "description": "no-cache",
-              "required": false
-            },
-            {
-              "in": "body",
-              "name": "data",
-              "description": "Requested grant",
-              "schema": {
-                "$ref": "#/definitions/GrantRequest"
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get user profiles by array of BBM ID",
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "description": "bearer [access token]",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "data",
+            "description": "Array of BbmId",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/BbmId"
               }
-            }
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "200": {
-              "description": "The request was successful.",
-              "headers": {
-                "Content-Encoding": {
-                  "type": "string",
-                  "description": "gzip"
-                },
-                "Content-Type": {
-                  "type": "string",
-                  "description": "text/html; charset=utf-8 OR application/json; charset=utf-8"
-                },
-                "Content-Length": {
-                  "type": "integer",
-                  "description": "The length of the content"
-                },
-                "Cache-Control": {
-                  "type": "string",
-                  "description": "no-cache,no-store"
-                },
-                "Expires": {
-                  "type": "string",
-                  "format": "date-time",
-                  "description": "Current date"
-                },
-                "Pragma": {
-                  "type": "string",
-                  "description": "no-cache"
-                }
-              },
-              "schema": {
-                "$ref": "#/definitions/GrantResponse"
-              }
-            },
-            "400": {
-              "description": "Bad request. Invalid parameters sent by client."
-            },
-            "401": {
-              "description": "Unautorized. Basic authentication failed."
-            },
-            "500": {
-              "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
-            },
-            "503": {
-              "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
             }
           }
-        }
-      },
-      "/v2/user/profile": {
-        "get": {
-          "tags": [
-            "User"
-          ],
-          "summary": "Get current user profile",
-          "description": "",
-          "parameters": [
-            {
-              "in": "header",
-              "name": "Authorization",
-              "type": "string",
-              "description": "bearer [access token]",
-              "required": true
-            }
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "200": {
-              "description": "The request was successful.",
-              "schema": {
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "schema": {
+              "type": "array",
+              "items": {
                 "$ref": "#/definitions/User"
               }
-            },
-            "400": {
-              "description": "Bad request. Invalid parameters sent by client."
-            },
-            "401": {
-              "description": "Unautorized. Invalid access token."
-            },
-            "429": {
-              "description": "Too many requests. Too many requests in a giving amount of time.",
-              "schema": {
-                "$ref": "#/definitions/ErrorResponse"
-              }
-            },
-            "500": {
-              "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
-            },
-            "503": {
-              "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
             }
-          }
-        },
-        "post": {
-          "tags": [
-            "User"
-          ],
-          "summary": "Get user profiles by array of BBM ID",
-          "description": "",
-          "parameters": [
-            {
-              "in": "header",
-              "name": "Authorization",
-              "type": "string",
-              "description": "bearer [access token]",
-              "required": true
-            },
-            {
-              "in": "body",
-              "name": "data",
-              "description": "Array of BbmId",
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/definitions/BbmId"
-                }
-              }
+          },
+          "400": {
+            "description": "Bad request. Invalid parameters sent by client."
+          },
+          "401": {
+            "description": "Unautorized. Invalid access token."
+          },
+          "429": {
+            "description": "Too many requests. Too many requests in a giving amount of time.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
             }
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "200": {
-              "description": "The request was successful.",
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/definitions/User"
-                }
-              }
-            },
-            "400": {
-              "description": "Bad request. Invalid parameters sent by client."
-            },
-            "401": {
-              "description": "Unautorized. Invalid access token."
-            },
-            "429": {
-              "description": "Too many requests. Too many requests in a giving amount of time.",
-              "schema": {
-                "$ref": "#/definitions/ErrorResponse"
-              }
-            },
-            "500": {
-              "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
-            },
-            "503": {
-              "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
-            }
+          },
+          "500": {
+            "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
+          },
+          "503": {
+            "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
           }
         }
-      },
-      "/v2/user/contacts": {
-        "get": {
-          "tags": [
-            "User"
-          ],
-          "summary": "Get current user contacts",
-          "description": "",
-          "parameters": [
-            {
-              "in": "header",
-              "name": "Authorization",
-              "type": "string",
-              "description": "bearer [access token]",
-              "required": true
-            }
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "200": {
-              "description": "The request was successful.",
-              "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/definitions/BbmId"
-                }
-              }
-            },
-            "400": {
-              "description": "Bad request. Invalid parameters sent by client."
-            },
-            "401": {
-              "description": "Unautorized. Invalid access token."
-            },
-            "429": {
-              "description": "Too many requests. Too many requests in a giving amount of time.",
-              "schema": {
-                "$ref": "#/definitions/ErrorResponse"
-              }
-            },
-            "500": {
-              "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
-            },
-            "503": {
-              "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
-            }
-          }
-        }
-      },
-      "/v2/user/timeline/post": {
-        "post": {
-          "tags": [
-            "User"
-          ],
-          "summary": "Post to current user's timeline",
-          "description": "",
-          "parameters": [
-            {
-              "in": "header",
-              "name": "Authorization",
-              "type": "string",
-              "description": "bearer [access token]",
-              "required": true
-            },
-            {
-              "in": "body",
-              "name": "data",
-              "description": "Post message templete",
-              "schema": {
-                "$ref": "#/definitions/TextTemplate"
-              }
-            }
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "200": {
-              "description": "The request was successful."
-            },
-            "400": {
-              "description": "Bad request. Invalid parameters sent by client."
-            },
-            "401": {
-              "description": "Unautorized. Invalid access token."
-            },
-            "404": {
-              "description": "User not found."
-            },
-            "429": {
-              "description": "Too many requests. Too many requests in a giving amount of time.",
-              "schema": {
-                "$ref": "#/definitions/ErrorResponse"
-              }
-            },
-            "500": {
-              "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
-            },
-            "503": {
-              "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
-            }
-          }
-        }
-      },
-      "/v2/user/message": {
-        "post": {
-          "tags": [
-            "User"
-          ],
-          "summary": "Send message to contacts",
-          "description": "",
-          "parameters": [
-            {
-              "in": "header",
-              "name": "Authorization",
-              "type": "string",
-              "description": "bearer [access token]",
-              "required": true
-            },
-            {
-              "in": "body",
-              "name": "data",
-              "description": "Post message templete",
-              "schema": {
-                "$ref": "#/definitions/Message"
-              }
-            }
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "200": {
-              "description": "The request was successful."
-            },
-            "400": {
-              "description": "Bad request. Invalid parameters sent by client."
-            },
-            "401": {
-              "description": "Unautorized. Invalid access token."
-            },
-            "404": {
-              "description": "User not found."
-            },
-            "429": {
-              "description": "Too many requests. Too many requests in a giving amount of time.",
-              "schema": {
-                "$ref": "#/definitions/ErrorResponse"
-              }
-            },
-            "500": {
-              "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
-            },
-            "503": {
-              "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
-            }
-          }
-        }
-      },
-      "/v2/channels/subscriptions": {
-        "post": {
-          "tags": [
-            "Channel"
-          ],
-          "summary": "Subscribe user to a channel",
-          "description": "",
-          "parameters": [
-            {
-              "in": "header",
-              "name": "Authorization",
-              "type": "string",
-              "description": "bearer [access token]",
-              "required": true
-            }
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "200": {
-              "description": "The request was successful."
-            },
-            "400": {
-              "description": "Bad request. Invalid parameters sent by client."
-            },
-            "401": {
-              "description": "Unautorized. Invalid access token."
-            },
-            "500": {
-              "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
-            },
-            "503": {
-              "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
-            }
-          }
-        }
+      }
     },
+    "/v2/user/contacts": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Get current user contacts",
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "description": "bearer [access token]",
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/BbmId"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request. Invalid parameters sent by client."
+          },
+          "401": {
+            "description": "Unautorized. Invalid access token."
+          },
+          "429": {
+            "description": "Too many requests. Too many requests in a giving amount of time.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
+          },
+          "503": {
+            "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
+          }
+        }
+      }
+    },
+    "/v2/user/timeline/post": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Post to current user's timeline",
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "description": "bearer [access token]",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "data",
+            "description": "Post message templete",
+            "schema": {
+              "$ref": "#/definitions/TextTemplate"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful."
+          },
+          "400": {
+            "description": "Bad request. Invalid parameters sent by client."
+          },
+          "401": {
+            "description": "Unautorized. Invalid access token."
+          },
+          "404": {
+            "description": "User not found."
+          },
+          "429": {
+            "description": "Too many requests. Too many requests in a giving amount of time.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
+          },
+          "503": {
+            "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
+          }
+        }
+      }
+    },
+    "/v2/user/message": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Send message to contacts",
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "description": "bearer [access token]",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "data",
+            "description": "Post message templete",
+            "schema": {
+              "$ref": "#/definitions/Message"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful."
+          },
+          "400": {
+            "description": "Bad request. Invalid parameters sent by client."
+          },
+          "401": {
+            "description": "Unautorized. Invalid access token."
+          },
+          "404": {
+            "description": "User not found."
+          },
+          "429": {
+            "description": "Too many requests. Too many requests in a giving amount of time.",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
+          },
+          "503": {
+            "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
+          }
+        }
+      }
+    },
+    "/v2/channels/subscriptions": {
+      "post": {
+        "tags": [
+          "Channel"
+        ],
+        "summary": "Subscribe user to a channel",
+        "description": "",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "type": "string",
+            "description": "bearer [access token]",
+            "required": true
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "The request was successful."
+          },
+          "400": {
+            "description": "Bad request. Invalid parameters sent by client."
+          },
+          "401": {
+            "description": "Unautorized. Invalid access token."
+          },
+          "500": {
+            "description": "Server encountered unexpected software error. Retry at a later time may or may not succeed."
+          },
+          "503": {
+            "description": "Service unavailable. Server temporarily unavailable to handle the request. Retry at a later time will not succeed until the server is available again."
+          }
+        }
+      }
+  },
     "/v2/channels/regular": {
       "post": {
         "tags": [
@@ -1015,6 +1015,19 @@
         "ctaUrl": {
           "type": "string",
           "description": "Site url"
+        }
+      }
+    },
+    "BroadcastText": {
+      "type": "object",
+      "properties": {
+        "from": {
+          "type": "string",
+          "description": "The BBM ID of the user"
+        },
+        "message": {
+          "type": "object",
+          "description": "Description post"
         }
       }
     }
